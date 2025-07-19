@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Search Analyzer - Advanced Content Analysis Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <h1 class="logo">
+                    <i class="fas fa-search-plus"></i>
+                    Web Search Analyzer
+                </h1>
+                <p class="tagline">Advanced AI-Powered Content Analysis & Summarization</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                
+                <!-- Search Section -->
+                <section id="search-section" class="section active">
+                    <div class="search-container">
+                        <div class="search-box">
+                            <div class="search-input-container">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="search-input" placeholder="Enter your search query..." class="search-input">
+                                <div class="search-controls">
+                                    <select id="num-results" class="control-select">
+                                        <option value="10">10 results</option>
+                                        <option value="15">15 results</option>
+                                        <option value="20" selected>20 results</option>
+                                        <option value="25">25 results</option>
+                                        <option value="30">30 results</option>
+                                    </select>
+                                    <button id="search-btn" class="search-button">
+                                        <i class="fas fa-search"></i>
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search-suggestions">
+                            <span class="suggestion-label">Try searching for:</span>
+                            <button class="suggestion-btn" data-query="artificial intelligence">AI Technology</button>
+                            <button class="suggestion-btn" data-query="climate change">Climate Change</button>
+                            <button class="suggestion-btn" data-query="cryptocurrency">Cryptocurrency</button>
+                            <button class="suggestion-btn" data-query="space exploration">Space Exploration</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Results Section -->
+                <section id="results-section" class="section">
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h2 class="results-title">Search Results</h2>
+                            <div class="results-controls">
+                                <button id="select-all-btn" class="control-btn">
+                                    <i class="fas fa-check-square"></i> Select All
+                                </button>
+                                <button id="clear-selection-btn" class="control-btn">
+                                    <i class="fas fa-square"></i> Clear Selection
+                                </button>
+                                <span class="selection-counter">
+                                    <span id="selected-count">0</span>/10 selected
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div id="search-results" class="search-results">
+                            <!-- Results will be populated here -->
+                        </div>
+                        
+                        <div class="extract-container">
+                            <button id="extract-btn" class="extract-button" disabled>
+                                <i class="fas fa-download"></i>
+                                Extract Content from Selected Links
+                                <span class="loading-spinner" style="display: none;">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analysis Section -->
+                <section id="analysis-section" class="section">
+                    <div class="analysis-container">
+                        <div class="analysis-header">
+                            <h2 class="analysis-title">Content Analysis & Summaries</h2>
+                            <div class="analysis-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Sources:</span>
+                                    <span id="sources-count" class="stat-value">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Words:</span>
+                                    <span id="words-count" class="stat-value">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Reading Time:</span>
+                                    <span id="reading-time" class="stat-value">0 min</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Summary Type Selection -->
+                        <div class="summary-selection">
+                            <h3>Choose Summary Type:</h3>
+                            <div class="summary-types">
+                                <button class="summary-type-btn" data-type="detailed_summary">
+                                    <i class="fas fa-list-ul"></i>
+                                    <span class="type-name">Detailed Summary</span>
+                                    <span class="type-desc">Comprehensive overview with key findings</span>
+                                </button>
+                                <button class="summary-type-btn" data-type="essay">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span class="type-name">Essay Format</span>
+                                    <span class="type-desc">Structured academic writing style</span>
+                                </button>
+                                <button class="summary-type-btn" data-type="comprehensive_analysis">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span class="type-name">Analysis Report</span>
+                                    <span class="type-desc">In-depth analytical examination</span>
+                                </button>
+                                <button class="summary-type-btn" data-type="simple_translation">
+                                    <i class="fas fa-language"></i>
+                                    <span class="type-name">Simple Language</span>
+                                    <span class="type-desc">Easy to understand translation</span>
+                                </button>
+                                <button class="summary-type-btn" data-type="visual_report">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span class="type-name">Visual Report</span>
+                                    <span class="type-desc">Charts, graphs, and visualizations</span>
+                                </button>
+                                <button class="summary-type-btn" data-type="crux">
+                                    <i class="fas fa-bullseye"></i>
+                                    <span class="type-name">Crux</span>
+                                    <span class="type-desc">Essential points only</span>
+                                </button>
+                                <button class="summary-type-btn" data-type="conclusion">
+                                    <i class="fas fa-flag-checkered"></i>
+                                    <span class="type-name">Conclusion</span>
+                                    <span class="type-desc">Final thoughts and implications</span>
+                                </button>
+                                <button class="summary-type-btn" data-type="ai_summary">
+                                    <i class="fas fa-robot"></i>
+                                    <span class="type-name">AI Summary (700 words)</span>
+                                    <span class="type-desc">AI-generated concise summary</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Summary Display -->
+                        <div id="summary-display" class="summary-display" style="display: none;">
+                            <!-- Summary content will be displayed here -->
+                        </div>
+
+                        <!-- Raw Document Access -->
+                        <div class="document-access">
+                            <h3>Document Actions:</h3>
+                            <div class="document-buttons">
+                                <button id="view-raw-btn" class="action-btn">
+                                    <i class="fas fa-file-text"></i>
+                                    View Raw Document
+                                </button>
+                                <button id="download-doc-btn" class="action-btn">
+                                    <i class="fas fa-download"></i>
+                                    Download Document
+                                </button>
+                                <button id="view-sources-btn" class="action-btn">
+                                    <i class="fas fa-link"></i>
+                                    View Source List
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Loading Overlay -->
+                <div id="loading-overlay" class="loading-overlay" style="display: none;">
+                    <div class="loading-content">
+                        <div class="loading-spinner-large">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <h3 id="loading-text">Processing...</h3>
+                        <p id="loading-details">Please wait while we analyze the content</p>
+                    </div>
+                </div>
+
+                <!-- Error Messages -->
+                <div id="error-message" class="error-message" style="display: none;">
+                    <div class="error-content">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span id="error-text">An error occurred</span>
+                        <button id="error-close" class="error-close">×</button>
+                    </div>
+                </div>
+
+                <!-- Success Messages -->
+                <div id="success-message" class="success-message" style="display: none;">
+                    <div class="success-content">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="success-text">Operation completed successfully</span>
+                        <button id="success-close" class="success-close">×</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 Web Search Analyzer. Advanced AI-powered content analysis tool with 8 summary types and 10 different analytical approaches.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <!-- Raw Document Modal -->
+    <div id="raw-document-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Raw Document Content</h3>
+                <button class="modal-close" data-modal="raw-document-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="raw-document-content" class="raw-content">
+                    <!-- Raw content will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sources Modal -->
+    <div id="sources-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Source Information</h3>
+                <button class="modal-close" data-modal="sources-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="sources-content" class="sources-content">
+                    <!-- Sources will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.18.0/plotly.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
