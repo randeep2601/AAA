@@ -54,3 +54,26 @@ python -m simple_bert_tool.simple_bert_summarizer research_paper.txt --ratio 0.1
 ```
 
 Enjoy! 🌟
+
+## Using Google Gemini (optional)
+
+If you have access to Google’s Gemini API you can let the tool delegate the whole explanation job to the **Gemini-Pro** model.  It often produces nicer, more natural summaries.
+
+1.  Get an API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+2.  Export it once per shell:
+
+```bash
+export GOOGLE_API_KEY="YOUR_KEY_HERE"
+```
+
+3.  Invoke the tool:
+
+```bash
+python -m simple_bert_tool.simple_bert_summarizer book.txt --engine gemini
+```
+
+Notes:
+
+* If `--engine` is **auto** (the default) the program picks *gemini* whenever `GOOGLE_API_KEY` is set, otherwise it falls back to the local BERT model.
+* You can also pass `--api-key` directly on the command line.
+* The Gemini backend needs the extra Python package `google-generativeai` which is already in `requirements.txt`.
