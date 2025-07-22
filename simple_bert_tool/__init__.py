@@ -1,0 +1,1 @@
+"""Package for the Simple BERT Summarizer tool."""
